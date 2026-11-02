@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Perancangan Antarmuka – POS System Toko Fenny Grosir</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:#1a1a2e;min-height:100vh;padding:36px 16px;color:#e2e8f0}
+.hdr{text-align:center;max-width:960px;margin:0 auto 32px}
+.hdr .badge{display:inline-block;background:linear-gradient(90deg,#374151,#4b5563);color:#9ca3af;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 16px;border-radius:50px;margin-bottom:12px;border:1px solid #6b7280}
+.hdr h1{font-family:'Poppins',sans-serif;font-size:clamp(16px,2.4vw,22px);font-weight:800;color:#d1d5db;line-height:1.4;margin-bottom:8px}
+.hdr p{font-size:12px;color:#6b7280}
+/* TABS */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:1100px;margin:0 auto 28px}
+.tab-btn{padding:8px 18px;border-radius:8px;border:1.5px solid #374151;background:#1f2937;color:#9ca3af;font-size:12px;font-weight:600;cursor:pointer;transition:.2s;font-family:'Inter',sans-serif}
+.tab-btn:hover{background:#374151;color:#d1d5db}
+.tab-btn.active{background:#374151;border-color:#6b7280;color:#f3f4f6;box-shadow:0 2px 8px rgba(0,0,0,0.4)}
+/* PANEL */
+.panel{display:none;max-width:1100px;margin:0 auto;animation:fadeUp .35s ease}
+.panel.active{display:block}
+/* MOCKUP WRAPPER */
+.mockup-wrap{background:#111827;border:1px solid #374151;border-radius:16px;padding:20px;box-shadow:0 16px 40px rgba(0,0,0,0.5)}
+.mockup-label{font-family:'Poppins',sans-serif;font-size:13px;font-weight:700;color:#6b7280;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.mockup-label span{background:#374151;color:#9ca3af;padding:2px 10px;border-radius:50px;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase}
+/* BROWSER CHROME */
+.browser{background:#1f2937;border-radius:12px;overflow:hidden;border:1px solid #374151}
+.browser-bar{background:#111827;padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid #374151}
+.dot{width:10px;height:10px;border-radius:50%}
+.dot.r{background:#4b5563}.dot.y{background:#4b5563}.dot.g{background:#4b5563}
+.url-bar{flex:1;background:#1f2937;border:1px solid #374151;border-radius:6px;padding:4px 12px;font-size:11px;color:#6b7280;font-family:'Inter',sans-serif}
+.browser-body{background:#f3f4f6;min-height:480px;position:relative;overflow:hidden}
+
+/* ─── WIREFRAME ELEMENTS ─── */
+/* Broken image placeholder */
+.img-broken{background:#e5e7eb;border:2px dashed #9ca3af;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#9ca3af;font-size:11px;gap:6px;border-radius:4px}
+.img-broken svg{opacity:0.5}
+
+/* Generic blocks */
+.wf-nav{background:#6b7280;height:48px;display:flex;align-items:center;padding:0 20px;gap:16px}
+.wf-nav-logo{width:100px;height:24px;background:#9ca3af;border-radius:4px;display:flex;align-items:center;justify-content:center}
+.wf-nav-logo span{color:#4b5563;font-size:9px;font-weight:700}
+.wf-nav-item{width:64px;height:10px;background:#9ca3af;border-radius:3px;opacity:0.6}
+.wf-nav-item.active{opacity:1;background:#d1d5db}
+.wf-badge{background:#4b5563;color:#9ca3af;padding:2px 8px;border-radius:4px;font-size:9px}
+
+/* sidebar */
+.wf-sidebar{background:#e5e7eb;width:190px;min-height:430px;padding:12px;border-right:1px solid #d1d5db;flex-shrink:0}
+.wf-side-item{height:34px;background:#d1d5db;border-radius:6px;margin-bottom:8px;display:flex;align-items:center;padding:0 10px;gap:8px}
+.wf-side-item.active-item{background:#9ca3af}
+.wf-side-icon{width:14px;height:14px;background:#9ca3af;border-radius:3px}
+.wf-side-text{width:80px;height:8px;background:#9ca3af;border-radius:3px}
+
+/* content area */
+.wf-content{flex:1;padding:16px;background:#f9fafb}
+.wf-title-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+.wf-title{width:140px;height:16px;background:#9ca3af;border-radius:4px}
+.wf-btn{height:30px;padding:0 14px;background:#9ca3af;border-radius:6px;display:flex;align-items:center;justify-content:center}
+.wf-btn span{width:60px;height:8px;background:#6b7280;border-radius:3px}
+
+/* table */
+.wf-table{width:100%;border-collapse:collapse;margin-bottom:12px}
+.wf-table-hdr{background:#e5e7eb;height:30px}
+.wf-table-hdr td{border:1px solid #d1d5db;padding:0 8px}
+.wf-cell{width:70px;height:8px;background:#9ca3af;border-radius:3px}
+.wf-table-row{height:36px}
+.wf-table-row td{border:1px solid #e5e7eb;padding:0 8px}
+.wf-cell-val{width:80px;height:8px;background:#d1d5db;border-radius:3px}
+
+/* form */
+.wf-form-group{margin-bottom:12px}
+.wf-label{width:80px;height:8px;background:#9ca3af;border-radius:3px;margin-bottom:6px}
+.wf-input{height:34px;background:#e5e7eb;border:1px solid #d1d5db;border-radius:6px;width:100%;display:flex;align-items:center;padding:0 10px}
+.wf-input-text{width:120px;height:8px;background:#c8ccd0;border-radius:3px}
+
+/* card */
+.wf-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:12px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}
+.wf-card-title{width:100px;height:10px;background:#9ca3af;border-radius:3px;margin-bottom:10px}
+.wf-card-val{width:80px;height:20px;background:#d1d5db;border-radius:4px}
+
+/* login card */
+.wf-login-wrap{background:#f3f4f6;height:100%;display:flex;align-items:center;justify-content:center;min-height:430px}
+.wf-login-card{background:#fff;border:1px solid #e5e7eb;border-radius:10px;padding:28px;width:300px;box-shadow:0 4px 16px rgba(0,0,0,0.08)}
+.wf-login-logo{width:60px;height:60px;background:#e5e7eb;border-radius:12px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center}
+.wf-login-title{width:140px;height:14px;background:#9ca3af;border-radius:4px;margin:0 auto 20px}
+.wf-login-sub{width:180px;height:8px;background:#d1d5db;border-radius:3px;margin:0 auto 24px}
+
+/* struk */
+.wf-struk{background:#fff;border:1px solid #e5e7eb;border-radius:6px;padding:14px;width:220px;margin:0 auto}
+.wf-struk-head{text-align:center;margin-bottom:10px}
+.wf-struk-title{width:120px;height:10px;background:#9ca3af;border-radius:3px;margin:0 auto 6px}
+.wf-struk-sub{width:80px;height:7px;background:#d1d5db;border-radius:3px;margin:0 auto}
+.wf-struk-divider{border-top:1px dashed #d1d5db;margin:8px 0}
+.wf-struk-row{display:flex;justify-content:space-between;margin-bottom:5px}
+.wf-struk-item{width:90px;height:7px;background:#d1d5db;border-radius:3px}
+.wf-struk-price{width:50px;height:7px;background:#d1d5db;border-radius:3px}
+.wf-struk-total{width:70px;height:9px;background:#9ca3af;border-radius:3px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="badge">Perancangan Antarmuka (Beta)</div>
+  <h1>Wireframe Antarmuka – POS System Toko Fenny Grosir</h1>
+  <p>Tampilan <strong>beta / wireframe</strong> &nbsp;·&nbsp; Abu-abu &nbsp;·&nbsp; Sesuai Use Case Sistem POS</p>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('login')">UC-01 Login</button>
+  <button class="tab-btn" onclick="showTab('dashboard')">Dashboard</button>
+  <button class="tab-btn" onclick="showTab('barang')">UC-02 Manajemen Barang</button>
+  <button class="tab-btn" onclick="showTab('laporan')">UC-03 Laporan Penjualan</button>
+  <button class="tab-btn" onclick="showTab('transaksi')">UC-04 Proses Transaksi</button>
+  <button class="tab-btn" onclick="showTab('struk')">UC-05 Cetak Struk</button>
+</div>
+
+<!-- ══ UC-01 LOGIN ══ -->
+<div id="tab-login" class="panel active">
+<div class="mockup-wrap">
+  <div class="mockup-label">Halaman Login <span>UC-01</span></div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="url-bar">localhost/SkripsiFibril/pos_system/</div>
+    </div>
+    <div class="browser-body" style="background:#e9eaec;display:flex;align-items:center;justify-content:center;min-height:480px">
+      <!-- Background pattern -->
+      <div style="position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 20px,rgba(0,0,0,0.02) 20px,rgba(0,0,0,0.02) 40px)"></div>
+      <div class="wf-login-card" style="position:relative;z-index:2">
+        <!-- Logo broken image -->
+        <div class="wf-login-logo">
+          <div class="img-broken" style="width:44px;height:44px;border-radius:8px;border:1.5px dashed #9ca3af">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+        </div>
+        <div style="text-align:center;margin-bottom:20px">
+          <div style="width:150px;height:12px;background:#9ca3af;border-radius:4px;margin:0 auto 8px"></div>
+          <div style="width:110px;height:8px;background:#d1d5db;border-radius:3px;margin:0 auto"></div>
+        </div>
+        <div class="wf-form-group">
+          <div class="wf-label"></div>
+          <div class="wf-input" style="margin-bottom:0"><div style="width:60px;height:7px;background:#c8ccd0;border-radius:3px"></div></div>
+        </div>
+        <div style="height:6px"></div>
+        <div class="wf-form-group">
+          <div class="wf-label"></div>
+          <div class="wf-input"><div style="width:40px;height:7px;background:#c8ccd0;border-radius:3px"></div><div style="margin-left:auto;width:14px;height:10px;background:#d1d5db;border-radius:2px"></div></div>
+        </div>
+        <div style="height:6px"></div>
+        <!-- Checkbox remember -->
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+          <div style="width:14px;height:14px;background:#e5e7eb;border:1px solid #d1d5db;border-radius:3px"></div>
+          <div style="width:80px;height:7px;background:#d1d5db;border-radius:3px"></div>
+        </div>
+        <!-- Login button -->
+        <div style="height:38px;background:#6b7280;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:14px">
+          <div style="width:80px;height:9px;background:#9ca3af;border-radius:4px"></div>
+        </div>
+        <div style="text-align:center;width:160px;height:7px;background:#e5e7eb;border-radius:3px;margin:0 auto"></div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ DASHBOARD ══ -->
+<div id="tab-dashboard" class="panel">
+<div class="mockup-wrap">
+  <div class="mockup-label">Halaman Dashboard <span>Home</span></div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="url-bar">localhost/SkripsiFibril/pos_system/dashboard</div>
+    </div>
+    <div class="browser-body" style="min-height:480px">
+      <!-- Navbar -->
+      <div class="wf-nav">
+        <div class="wf-nav-logo"><span>LOGO</span></div>
+        <div style="flex:1"></div>
+        <div class="wf-nav-item active"></div>
+        <div class="wf-nav-item"></div>
+        <div class="wf-nav-item"></div>
+        <div class="wf-badge">Admin ▾</div>
+      </div>
+      <div style="display:flex;min-height:430px">
+        <!-- Sidebar -->
+        <div class="wf-sidebar">
+          <div class="wf-side-item active-item">
+            <div class="wf-side-icon"></div><div class="wf-side-text"></div>
+          </div>
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div style="height:16px"></div>
+          <div style="width:100%;height:1px;background:#d1d5db;margin-bottom:12px"></div>
+          <div class="wf-side-item"><div class="wf-side-icon" style="background:#9ca3af"></div><div style="width:50px;height:8px;background:#9ca3af;border-radius:3px"></div></div>
+        </div>
+        <!-- Content -->
+        <div class="wf-content">
+          <div class="wf-title-bar">
+            <div class="wf-title"></div>
+            <div style="width:80px;height:8px;background:#d1d5db;border-radius:3px"></div>
+          </div>
+          <!-- Stats cards -->
+          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:14px">
+            <div class="wf-card">
+              <!-- broken image icon on card -->
+              <div class="img-broken" style="height:32px;width:32px;border-radius:6px;margin-bottom:8px">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <div class="wf-card-title"></div>
+              <div class="wf-card-val"></div>
+            </div>
+            <div class="wf-card"><div class="img-broken" style="height:32px;width:32px;border-radius:6px;margin-bottom:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div class="wf-card-title"></div><div class="wf-card-val"></div></div>
+            <div class="wf-card"><div class="img-broken" style="height:32px;width:32px;border-radius:6px;margin-bottom:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div class="wf-card-title"></div><div class="wf-card-val"></div></div>
+            <div class="wf-card"><div class="img-broken" style="height:32px;width:32px;border-radius:6px;margin-bottom:8px"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div class="wf-card-title"></div><div class="wf-card-val"></div></div>
+          </div>
+          <!-- Chart placeholder -->
+          <div class="wf-card" style="height:160px;margin-bottom:12px">
+            <div class="wf-card-title"></div>
+            <div style="height:120px;background:#e5e7eb;border-radius:6px;display:flex;align-items:center;justify-content:center">
+              <div class="img-broken" style="width:64px;height:64px;border-radius:8px">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span>Grafik</span>
+              </div>
+            </div>
+          </div>
+          <!-- Recent -->
+          <div class="wf-card">
+            <div class="wf-card-title"></div>
+            <table class="wf-table">
+              <tr class="wf-table-hdr"><td><div class="wf-cell"></div></td><td><div class="wf-cell"></div></td><td><div class="wf-cell"></div></td></tr>
+              <tr class="wf-table-row"><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td></tr>
+              <tr class="wf-table-row"><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ UC-02 MANAJEMEN BARANG ══ -->
+<div id="tab-barang" class="panel">
+<div class="mockup-wrap">
+  <div class="mockup-label">Halaman Manajemen Barang <span>UC-02</span></div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="url-bar">localhost/SkripsiFibril/pos_system/produk</div>
+    </div>
+    <div class="browser-body" style="min-height:480px">
+      <div class="wf-nav">
+        <div class="wf-nav-logo"><span>LOGO</span></div>
+        <div style="flex:1"></div>
+        <div class="wf-nav-item"></div>
+        <div class="wf-nav-item active"></div>
+        <div class="wf-nav-item"></div>
+        <div class="wf-badge">Admin ▾</div>
+      </div>
+      <div style="display:flex;min-height:430px">
+        <div class="wf-sidebar">
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div class="wf-side-item active-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+        </div>
+        <div class="wf-content">
+          <div class="wf-title-bar">
+            <div class="wf-title"></div>
+            <div class="wf-btn" style="background:#6b7280"><span></span></div>
+          </div>
+          <!-- Search + Filter bar -->
+          <div style="display:flex;gap:8px;margin-bottom:12px">
+            <div class="wf-input" style="flex:1;background:#fff"><div style="width:14px;height:14px;background:#d1d5db;border-radius:50%;margin-right:6px"></div><div style="width:100px;height:7px;background:#e5e7eb;border-radius:3px"></div></div>
+            <div style="height:34px;padding:0 12px;background:#e5e7eb;border:1px solid #d1d5db;border-radius:6px;display:flex;align-items:center"><div style="width:60px;height:7px;background:#9ca3af;border-radius:3px"></div></div>
+          </div>
+          <!-- Table -->
+          <div class="wf-card" style="padding:0;overflow:hidden">
+            <table class="wf-table" style="margin-bottom:0">
+              <tr class="wf-table-hdr">
+                <td style="width:40px"><div style="width:20px;height:8px;background:#9ca3af;border-radius:3px"></div></td>
+                <td style="width:80px"><div class="img-broken" style="height:52px;border-radius:4px"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div></td>
+                <td><div class="wf-cell"></div></td>
+                <td><div class="wf-cell"></div></td>
+                <td><div class="wf-cell"></div></td>
+                <td><div class="wf-cell"></div></td>
+                <td><div class="wf-cell"></div></td>
+              </tr>
+              <tr class="wf-table-row" style="height:52px">
+                <td><div style="width:16px;height:8px;background:#e5e7eb;border-radius:3px"></div></td>
+                <td><!-- Broken img --><div class="img-broken" style="height:40px;width:40px;border-radius:4px;border:1.5px dashed #d1d5db"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div></td>
+                <td><div class="wf-cell-val"></div></td>
+                <td><div class="wf-cell-val" style="width:60px"></div></td>
+                <td><div class="wf-cell-val" style="width:60px"></div></td>
+                <td><div class="wf-cell-val" style="width:40px"></div></td>
+                <td style="display:flex;gap:4px;align-items:center;padding-top:14px">
+                  <div style="width:28px;height:22px;background:#d1d5db;border-radius:4px"></div>
+                  <div style="width:28px;height:22px;background:#d1d5db;border-radius:4px"></div>
+                </td>
+              </tr>
+              <tr class="wf-table-row" style="height:52px">
+                <td><div style="width:16px;height:8px;background:#e5e7eb;border-radius:3px"></div></td>
+                <td><div class="img-broken" style="height:40px;width:40px;border-radius:4px;border:1.5px dashed #d1d5db"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div></td>
+                <td><div class="wf-cell-val"></div></td>
+                <td><div class="wf-cell-val" style="width:60px"></div></td>
+                <td><div class="wf-cell-val" style="width:60px"></div></td>
+                <td><div class="wf-cell-val" style="width:40px"></div></td>
+                <td style="display:flex;gap:4px;align-items:center;padding-top:14px">
+                  <div style="width:28px;height:22px;background:#d1d5db;border-radius:4px"></div>
+                  <div style="width:28px;height:22px;background:#d1d5db;border-radius:4px"></div>
+                </td>
+              </tr>
+              <tr class="wf-table-row" style="height:52px">
+                <td><div style="width:16px;height:8px;background:#e5e7eb;border-radius:3px"></div></td>
+                <td><div class="img-broken" style="height:40px;width:40px;border-radius:4px;border:1.5px dashed #d1d5db"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div></td>
+                <td><div class="wf-cell-val"></div></td>
+                <td><div class="wf-cell-val" style="width:60px"></div></td>
+                <td><div class="wf-cell-val" style="width:60px"></div></td>
+                <td><div class="wf-cell-val" style="width:40px"></div></td>
+                <td style="display:flex;gap:4px;align-items:center;padding-top:14px">
+                  <div style="width:28px;height:22px;background:#d1d5db;border-radius:4px"></div>
+                  <div style="width:28px;height:22px;background:#d1d5db;border-radius:4px"></div>
+                </td>
+              </tr>
+            </table>
+          </div>
+          <!-- Pagination -->
+          <div style="display:flex;justify-content:flex-end;gap:6px;margin-top:10px">
+            <div style="width:28px;height:24px;background:#e5e7eb;border-radius:4px"></div>
+            <div style="width:28px;height:24px;background:#9ca3af;border-radius:4px"></div>
+            <div style="width:28px;height:24px;background:#e5e7eb;border-radius:4px"></div>
+            <div style="width:28px;height:24px;background:#e5e7eb;border-radius:4px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ UC-03 LAPORAN PENJUALAN ══ -->
+<div id="tab-laporan" class="panel">
+<div class="mockup-wrap">
+  <div class="mockup-label">Halaman Laporan Penjualan <span>UC-03</span></div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="url-bar">localhost/SkripsiFibril/pos_system/laporan</div>
+    </div>
+    <div class="browser-body" style="min-height:480px">
+      <div class="wf-nav">
+        <div class="wf-nav-logo"><span>LOGO</span></div>
+        <div style="flex:1"></div>
+        <div class="wf-nav-item"></div><div class="wf-nav-item"></div>
+        <div class="wf-nav-item active"></div>
+        <div class="wf-badge">Admin ▾</div>
+      </div>
+      <div style="display:flex;min-height:430px">
+        <div class="wf-sidebar">
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div class="wf-side-item active-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+          <div class="wf-side-item"><div class="wf-side-icon"></div><div class="wf-side-text"></div></div>
+        </div>
+        <div class="wf-content">
+          <div class="wf-title-bar">
+            <div class="wf-title"></div>
+            <div class="wf-btn" style="background:#6b7280"><span></span></div>
+          </div>
+          <!-- Filter -->
+          <div class="wf-card" style="margin-bottom:12px">
+            <div style="display:flex;gap:10px;align-items:flex-end">
+              <div style="flex:1"><div class="wf-label"></div><div class="wf-input" style="background:#fff"><div style="width:80px;height:7px;background:#e5e7eb;border-radius:3px"></div></div></div>
+              <div style="flex:1"><div class="wf-label"></div><div class="wf-input" style="background:#fff"><div style="width:80px;height:7px;background:#e5e7eb;border-radius:3px"></div></div></div>
+              <div class="wf-btn" style="background:#6b7280;height:34px"><span></span></div>
+            </div>
+          </div>
+          <!-- Summary cards -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px">
+            <div class="wf-card"><div class="wf-card-title"></div><div class="wf-card-val" style="width:100px;height:22px;background:#d1d5db"></div></div>
+            <div class="wf-card"><div class="wf-card-title"></div><div class="wf-card-val" style="width:100px;height:22px;background:#d1d5db"></div></div>
+            <div class="wf-card"><div class="wf-card-title"></div><div class="wf-card-val" style="width:100px;height:22px;background:#d1d5db"></div></div>
+          </div>
+          <!-- Chart -->
+          <div class="wf-card" style="height:120px;margin-bottom:12px">
+            <div class="wf-card-title"></div>
+            <div style="height:84px;background:#e5e7eb;border-radius:6px;display:flex;align-items:center;justify-content:center">
+              <div class="img-broken" style="width:52px;height:52px">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                <span>Chart</span>
+              </div>
+            </div>
+          </div>
+          <!-- Table -->
+          <div class="wf-card" style="padding:0;overflow:hidden">
+            <table class="wf-table" style="margin-bottom:0">
+              <tr class="wf-table-hdr"><td><div class="wf-cell"></div></td><td><div class="wf-cell"></div></td><td><div class="wf-cell"></div></td><td><div class="wf-cell"></div></td></tr>
+              <tr class="wf-table-row"><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td></tr>
+              <tr class="wf-table-row"><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td></tr>
+              <tr class="wf-table-row"><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td><td><div class="wf-cell-val"></div></td></tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ UC-04 PROSES TRANSAKSI ══ -->
+<div id="tab-transaksi" class="panel">
+<div class="mockup-wrap">
+  <div class="mockup-label">Halaman Proses Transaksi / Kasir <span>UC-04 + Linear Search</span></div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="url-bar">localhost/SkripsiFibril/pos_system/transaksi</div>
+    </div>
+    <div class="browser-body" style="min-height:480px">
+      <div class="wf-nav" style="background:#4b5563">
+        <div class="wf-nav-logo"><span>LOGO</span></div>
+        <div style="flex:1"></div>
+        <div class="wf-badge">Kasir ▾</div>
+      </div>
+      <div style="display:flex;min-height:430px">
+        <!-- Left: product search + list -->
+        <div style="flex:1;padding:12px;background:#f3f4f6;border-right:1px solid #e5e7eb">
+          <!-- Search bar (Linear Search) -->
+          <div style="margin-bottom:10px">
+            <div style="display:flex;align-items:center;gap:6px;background:#fff;border:1.5px solid #d1d5db;border-radius:8px;padding:8px 12px;margin-bottom:6px">
+              <div style="width:16px;height:16px;background:#d1d5db;border-radius:50%"></div>
+              <div style="flex:1;height:8px;background:#e5e7eb;border-radius:3px"></div>
+              <div style="width:50px;height:24px;background:#6b7280;border-radius:5px;display:flex;align-items:center;justify-content:center"><div style="width:30px;height:6px;background:#9ca3af;border-radius:3px"></div></div>
+            </div>
+            <div style="background:#e0f2fe;border:1px solid #bae6fd;border-radius:6px;padding:4px 8px;font-size:10px;color:#6b7280">
+              ⚡ Pencarian menggunakan Algoritma Linear Search
+            </div>
+          </div>
+          <!-- Product grid -->
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+            <div class="wf-card" style="cursor:pointer">
+              <div class="img-broken" style="height:60px;border-radius:6px;margin-bottom:6px">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <div style="width:70px;height:7px;background:#d1d5db;border-radius:3px;margin-bottom:5px"></div>
+              <div style="width:50px;height:9px;background:#9ca3af;border-radius:3px"></div>
+            </div>
+            <div class="wf-card"><div class="img-broken" style="height:60px;border-radius:6px;margin-bottom:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div style="width:70px;height:7px;background:#d1d5db;border-radius:3px;margin-bottom:5px"></div><div style="width:50px;height:9px;background:#9ca3af;border-radius:3px"></div></div>
+            <div class="wf-card"><div class="img-broken" style="height:60px;border-radius:6px;margin-bottom:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div style="width:70px;height:7px;background:#d1d5db;border-radius:3px;margin-bottom:5px"></div><div style="width:50px;height:9px;background:#9ca3af;border-radius:3px"></div></div>
+            <div class="wf-card"><div class="img-broken" style="height:60px;border-radius:6px;margin-bottom:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div style="width:70px;height:7px;background:#d1d5db;border-radius:3px;margin-bottom:5px"></div><div style="width:50px;height:9px;background:#9ca3af;border-radius:3px"></div></div>
+            <div class="wf-card"><div class="img-broken" style="height:60px;border-radius:6px;margin-bottom:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div style="width:70px;height:7px;background:#d1d5db;border-radius:3px;margin-bottom:5px"></div><div style="width:50px;height:9px;background:#9ca3af;border-radius:3px"></div></div>
+            <div class="wf-card"><div class="img-broken" style="height:60px;border-radius:6px;margin-bottom:6px"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg></div><div style="width:70px;height:7px;background:#d1d5db;border-radius:3px;margin-bottom:5px"></div><div style="width:50px;height:9px;background:#9ca3af;border-radius:3px"></div></div>
+          </div>
+        </div>
+        <!-- Right: cart -->
+        <div style="width:260px;padding:12px;background:#fff;display:flex;flex-direction:column">
+          <div style="width:100px;height:12px;background:#9ca3af;border-radius:4px;margin-bottom:12px"></div>
+          <!-- Cart items -->
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f3f4f6">
+              <div style="width:36px;height:36px;background:#e5e7eb;border-radius:4px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="width:80px;height:7px;background:#d1d5db;border-radius:3px;margin-bottom:5px"></div><div style="width:50px;height:9px;background:#9ca3af;border-radius:3px"></div></div>
+              <div style="display:flex;align-items:center;gap:4px">
+                <div style="width:20px;height:20px;background:#e5e7eb;border-radius:4px"></div>
+                <div style="width:20px;height:16px;background:#f3f4f6;border-radius:3px;display:flex;align-items:center;justify-content:center"><div style="width:12px;height:6px;background:#d1d5db;border-radius:2px"></div></div>
+                <div style="width:20px;height:20px;background:#e5e7eb;border-radius:4px"></div>
+              </div>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid #f3f4f6">
+              <div style="width:36px;height:36px;background:#e5e7eb;border-radius:4px;flex-shrink:0"></div>
+              <div style="flex:1"><div style="width:80px;height:7px;background:#d1d5db;border-radius:3px;margin-bottom:5px"></div><div style="width:50px;height:9px;background:#9ca3af;border-radius:3px"></div></div>
+              <div style="display:flex;align-items:center;gap:4px">
+                <div style="width:20px;height:20px;background:#e5e7eb;border-radius:4px"></div>
+                <div style="width:20px;height:16px;background:#f3f4f6;border-radius:3px"></div>
+                <div style="width:20px;height:20px;background:#e5e7eb;border-radius:4px"></div>
+              </div>
+            </div>
+          </div>
+          <!-- Total + bayar -->
+          <div style="border-top:1px solid #e5e7eb;padding-top:10px;margin-top:10px">
+            <div style="display:flex;justify-content:space-between;margin-bottom:8px"><div style="width:50px;height:8px;background:#9ca3af;border-radius:3px"></div><div style="width:70px;height:10px;background:#6b7280;border-radius:3px"></div></div>
+            <div class="wf-form-group" style="margin-bottom:8px">
+              <div class="wf-label"></div>
+              <div class="wf-input"><div style="width:80px;height:7px;background:#e5e7eb;border-radius:3px"></div></div>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:12px"><div style="width:60px;height:8px;background:#d1d5db;border-radius:3px"></div><div style="width:70px;height:8px;background:#d1d5db;border-radius:3px"></div></div>
+            <div style="height:38px;background:#6b7280;border-radius:8px;display:flex;align-items:center;justify-content:center">
+              <div style="width:100px;height:9px;background:#9ca3af;border-radius:4px"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ══ UC-05 CETAK STRUK ══ -->
+<div id="tab-struk" class="panel">
+<div class="mockup-wrap">
+  <div class="mockup-label">Halaman Cetak Struk / Invoice <span>UC-05</span></div>
+  <div class="browser">
+    <div class="browser-bar">
+      <div class="dot r"></div><div class="dot y"></div><div class="dot g"></div>
+      <div class="url-bar">localhost/SkripsiFibril/pos_system/struk/{id}</div>
+    </div>
+    <div class="browser-body" style="min-height:480px;background:#e9eaec;display:flex;align-items:center;justify-content:center;padding:20px">
+      <!-- Struk preview -->
+      <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;justify-content:center">
+        <div style="background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:24px;width:260px;box-shadow:0 4px 16px rgba(0,0,0,0.1)">
+          <!-- Store logo / broken image -->
+          <div class="img-broken" style="height:50px;border-radius:8px;margin-bottom:12px">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <span>Logo Toko</span>
+          </div>
+          <!-- Store name -->
+          <div style="text-align:center;margin-bottom:12px">
+            <div style="width:140px;height:12px;background:#9ca3af;border-radius:4px;margin:0 auto 6px"></div>
+            <div style="width:100px;height:8px;background:#d1d5db;border-radius:3px;margin:0 auto 4px"></div>
+            <div style="width:80px;height:7px;background:#e5e7eb;border-radius:3px;margin:0 auto"></div>
+          </div>
+          <div style="border-top:1px dashed #d1d5db;margin:10px 0"></div>
+          <!-- No transaksi + tanggal -->
+          <div style="display:flex;justify-content:space-between;margin-bottom:8px"><div style="width:80px;height:7px;background:#d1d5db;border-radius:3px"></div><div style="width:70px;height:7px;background:#d1d5db;border-radius:3px"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:10px"><div style="width:60px;height:7px;background:#e5e7eb;border-radius:3px"></div><div style="width:60px;height:7px;background:#e5e7eb;border-radius:3px"></div></div>
+          <div style="border-top:1px dashed #d1d5db;margin:8px 0"></div>
+          <!-- Items -->
+          <div style="margin-bottom:6px">
+            <div class="wf-struk-row"><div class="wf-struk-item"></div><div class="wf-struk-price"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div style="width:60px;height:6px;background:#e5e7eb;border-radius:3px"></div><div style="width:40px;height:6px;background:#e5e7eb;border-radius:3px"></div></div>
+          </div>
+          <div style="margin-bottom:6px">
+            <div class="wf-struk-row"><div class="wf-struk-item" style="width:100px"></div><div class="wf-struk-price"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div style="width:50px;height:6px;background:#e5e7eb;border-radius:3px"></div><div style="width:40px;height:6px;background:#e5e7eb;border-radius:3px"></div></div>
+          </div>
+          <div style="margin-bottom:6px">
+            <div class="wf-struk-row"><div class="wf-struk-item" style="width:80px"></div><div class="wf-struk-price"></div></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div style="width:40px;height:6px;background:#e5e7eb;border-radius:3px"></div><div style="width:40px;height:6px;background:#e5e7eb;border-radius:3px"></div></div>
+          </div>
+          <div style="border-top:1.5px solid #9ca3af;margin:10px 0"></div>
+          <!-- Total -->
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div class="wf-struk-total" style="width:50px;height:9px;background:#9ca3af"></div><div class="wf-struk-total" style="width:70px;height:11px;background:#6b7280"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:6px"><div style="width:60px;height:7px;background:#d1d5db;border-radius:3px"></div><div style="width:60px;height:7px;background:#d1d5db;border-radius:3px"></div></div>
+          <div style="display:flex;justify-content:space-between;margin-bottom:12px"><div style="width:55px;height:7px;background:#d1d5db;border-radius:3px"></div><div style="width:55px;height:7px;background:#d1d5db;border-radius:3px"></div></div>
+          <!-- Thank you note (broken img barcode) -->
+          <div style="border-top:1px dashed #d1d5db;padding-top:10px;text-align:center">
+            <div class="img-broken" style="height:36px;width:120px;border-radius:4px;margin:0 auto 8px;border:1px dashed #d1d5db">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9ca3af" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>
+              <span>Barcode</span>
+            </div>
+            <div style="width:120px;height:7px;background:#e5e7eb;border-radius:3px;margin:0 auto"></div>
+          </div>
+        </div>
+        <!-- Buttons area -->
+        <div style="display:flex;flex-direction:column;gap:10px;padding-top:40px">
+          <div style="width:130px;height:38px;background:#6b7280;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+            <div style="width:14px;height:14px;background:#9ca3af;border-radius:2px"></div>
+            <div style="width:60px;height:8px;background:#9ca3af;border-radius:3px"></div>
+          </div>
+          <div style="width:130px;height:38px;background:#4b5563;border-radius:8px;display:flex;align-items:center;justify-content:center;gap:8px">
+            <div style="width:14px;height:14px;background:#9ca3af;border-radius:2px"></div>
+            <div style="width:60px;height:8px;background:#9ca3af;border-radius:3px"></div>
+          </div>
+          <div style="width:130px;height:38px;background:#374151;border-radius:8px;display:flex;align-items:center;justify-content:center">
+            <div style="width:80px;height:8px;background:#6b7280;border-radius:3px"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<script>
+function showTab(name){
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

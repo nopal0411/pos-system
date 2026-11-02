@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Pengujian Black Box – POS Toko Fenny Grosir</title>
+<style>
+/* ===== ACADEMIC THESIS STYLE ===== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Times New Roman',Times,serif;
+  background:#b8b8b8;
+  min-height:100vh;
+  padding:28px 10px 52px;
+  color:#000;
+  font-size:13px;
+}
+/* ── kertas A4 ── */
+.page{
+  max-width:1060px;
+  margin:0 auto;
+  background:#fff;
+  border:1px solid #888;
+  box-shadow:0 6px 28px rgba(0,0,0,.28);
+  padding:40px 48px 56px;
+}
+/* ── judul ── */
+.title{
+  text-align:center;
+  border-bottom:2.5px solid #000;
+  padding-bottom:14px;
+  margin-bottom:22px;
+}
+.title h1{
+  font-size:17px;font-weight:700;
+  text-transform:uppercase;letter-spacing:2px;
+  margin-bottom:5px;
+}
+.title p{font-size:13px;color:#222;margin-top:3px}
+/* ── toolbar ── */
+.toolbar{display:flex;justify-content:flex-end;gap:10px;margin-bottom:18px}
+.btn{
+  padding:7px 20px;border-radius:2px;cursor:pointer;
+  font-family:'Times New Roman',serif;font-size:13px;font-weight:700;
+}
+.btn-solid{background:#000;color:#fff;border:2px solid #000}
+.btn-solid:hover{background:#222}
+.btn-out{background:#fff;color:#000;border:2px solid #000}
+.btn-out:hover{background:#f0f0f0}
+/* ── intro ── */
+.intro{
+  font-size:13px;line-height:1.85;
+  margin-bottom:24px;
+  text-align:justify;
+}
+/* ── section heading ── */
+.sec-title{
+  background:#000;color:#fff;
+  padding:7px 12px;
+  font-size:13px;font-weight:700;
+  letter-spacing:.8px;
+  text-transform:uppercase;
+  margin-bottom:0;
+  margin-top:32px;
+}
+/* ── tabel pengujian ── */
+.test-table{
+  width:100%;border-collapse:collapse;
+  margin-bottom:28px;
+  font-size:12.5px;
+}
+.test-table th{
+  background:#000;color:#fff;
+  padding:7px 9px;
+  font-family:'Times New Roman',serif;
+  font-size:12px;font-weight:700;
+  border:1.5px solid #000;
+  text-align:center;
+  white-space:nowrap;
+}
+.test-table td{
+  padding:7px 9px;
+  border:1px solid #777;
+  font-family:'Times New Roman',serif;
+  font-size:12px;
+  vertical-align:top;
+  line-height:1.55;
+}
+.test-table tbody tr:nth-child(even){background:#f5f5f5}
+.test-table tbody tr:hover{background:#eaeaea}
+.td-no{text-align:center;width:36px;font-weight:700}
+.td-status{text-align:center;width:90px;font-weight:700}
+.ok{color:#000;font-weight:700}
+.ok::before{content:"✓ ";font-size:14px}
+.fail{color:#555;font-weight:700}
+.fail::before{content:"✗ ";font-size:14px}
+/* ── ringkasan ── */
+.summary-box{
+  border:1.5px solid #000;
+  padding:16px 20px;
+  background:#fafafa;
+  margin-top:32px;
+}
+.summary-box h2{
+  font-size:14px;font-weight:700;
+  text-transform:uppercase;letter-spacing:1px;
+  margin-bottom:12px;
+  border-bottom:1px solid #000;
+  padding-bottom:6px;
+}
+.summary-table{
+  width:100%;border-collapse:collapse;
+  font-size:12.5px;
+}
+.summary-table th{
+  background:#000;color:#fff;
+  padding:7px 10px;
+  text-align:center;
+  font-family:'Times New Roman',serif;
+  font-size:12.5px;font-weight:700;
+  border:1.5px solid #000;
+}
+.summary-table td{
+  padding:7px 10px;
+  border:1px solid #888;
+  text-align:center;
+  font-family:'Times New Roman',serif;
+  font-size:12.5px;
+}
+.summary-table tr:nth-child(even){background:#f5f5f5}
+.total-row{font-weight:700;background:#e8e8e8 !important}
+/* ── kesimpulan ── */
+.conclusion{
+  margin-top:22px;
+  font-size:13px;line-height:1.85;
+  text-align:justify;
+  border-top:1px solid #ccc;
+  padding-top:16px;
+}
+/* ── print ── */
+@media print{
+  body{background:#fff;padding:0}
+  .page{border:none;box-shadow:none;padding:8px 12px}
+  .toolbar{display:none!important}
+  .sec-title{margin-top:22px}
+}
+</style>
+</head>
+<body>
+<div class="page" id="main-page">
+
+  <!-- ── JUDUL ── -->
+  <div class="title">
+    <h1>Pengujian Black Box Testing</h1>
+    <p>Sistem Point of Sales (POS) &ndash; Toko Fenny Grosir</p>
+    <p style="font-size:11.5px;color:#555;margin-top:4px;">
+      Metode Pengujian : <strong>Black Box Testing</strong> &nbsp;&middot;&nbsp;
+      Jenis : <strong>Equivalence Partitioning</strong>
+    </p>
+  </div>
+
+  <!-- ── TOOLBAR ── -->
+  <div class="toolbar">
+    <button class="btn btn-out" onclick="window.print()">&#128424; Cetak / Print</button>
+    <button class="btn btn-solid" onclick="dlPNG()">&#11015; Download PNG</button>
+  </div>
+
+  <!-- ── DESKRIPSI METODE ── -->
+  <p class="intro">
+    Pengujian sistem dilakukan menggunakan metode <em>Black Box Testing</em> dengan teknik
+    <em>Equivalence Partitioning</em>. Pengujian berfokus pada fungsionalitas sistem tanpa
+    memperhatikan kode sumber secara langsung. Setiap proses diuji dengan skenario
+    <strong>data valid</strong> dan <strong>data tidak valid</strong> untuk memastikan
+    sistem merespons sesuai yang diharapkan. Hasil pengujian dicatat dalam tabel di bawah ini.
+  </p>
+
+  <!-- ══════════════════════════════════════════════════
+       UC-01 : LOGIN
+       ══════════════════════════════════════════════════ -->
+  <div class="sec-title">UC-01 &nbsp;|&nbsp; Pengujian Login</div>
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th style="width:130px">Nama Fungsi</th>
+        <th style="width:160px">Skenario Uji</th>
+        <th style="width:160px">Data Masukan</th>
+        <th>Hasil yang Diharapkan</th>
+        <th>Hasil Uji</th>
+        <th style="width:80px">Kesimpulan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-no">1</td>
+        <td>Login sistem</td>
+        <td>Username &amp; password benar</td>
+        <td>Username: <em>admin</em><br/>Password: <em>admin123</em></td>
+        <td>Sistem menerima login dan mengarahkan pengguna ke halaman dashboard sesuai role.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">2</td>
+        <td>Login sistem</td>
+        <td>Password salah / tidak cocok</td>
+        <td>Username: <em>admin</em><br/>Password: <em>salah123</em></td>
+        <td>Sistem menampilkan pesan kesalahan <em>"Username atau password salah"</em> dan tidak masuk ke sistem.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">3</td>
+        <td>Login sistem</td>
+        <td>Username atau password dikosongkan</td>
+        <td>Username: <em>(kosong)</em><br/>Password: <em>(kosong)</em></td>
+        <td>Form menampilkan validasi wajib isi dan tidak mengirimkan data ke server.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">4</td>
+        <td>Login sistem</td>
+        <td>Username tidak terdaftar di database</td>
+        <td>Username: <em>xyzuser</em><br/>Password: <em>admin123</em></td>
+        <td>Sistem menampilkan pesan <em>"Username atau password salah"</em>.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ══════════════════════════════════════════════════
+       UC-02 : MANAJEMEN BARANG
+       ══════════════════════════════════════════════════ -->
+  <div class="sec-title">UC-02 &nbsp;|&nbsp; Pengujian Manajemen Barang</div>
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th style="width:130px">Nama Fungsi</th>
+        <th style="width:160px">Skenario Uji</th>
+        <th style="width:160px">Data Masukan</th>
+        <th>Hasil yang Diharapkan</th>
+        <th>Hasil Uji</th>
+        <th style="width:80px">Kesimpulan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-no">5</td>
+        <td>Tambah produk</td>
+        <td>Data produk diisi lengkap dan valid</td>
+        <td>Kode: <em>PRD-001</em><br/>Nama: <em>Gula Pasir 1 Kg</em><br/>Kategori: Sembako<br/>Harga Jual: Rp 15.000<br/>Stok: 50</td>
+        <td>Data produk tersimpan ke database dan muncul pada daftar produk.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">6</td>
+        <td>Tambah produk</td>
+        <td>Kode produk sudah digunakan (duplikat)</td>
+        <td>Kode: <em>PRD-001</em> (sudah ada)<br/>Nama: <em>Minyak Goreng</em></td>
+        <td>Sistem menampilkan pesan kesalahan <em>"Kode produk sudah terdaftar"</em> dan data tidak tersimpan.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">7</td>
+        <td>Tambah produk</td>
+        <td>Field wajib tidak diisi (nama produk kosong)</td>
+        <td>Kode: <em>PRD-002</em><br/>Nama: <em>(kosong)</em></td>
+        <td>Form menampilkan validasi dan tidak menyimpan data ke database.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">8</td>
+        <td>Edit produk</td>
+        <td>Mengubah harga jual dan stok produk yang ada</td>
+        <td>Harga Jual: Rp 16.000<br/>Stok: 45</td>
+        <td>Data produk berhasil diperbarui dan perubahan tampil pada halaman daftar produk.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">9</td>
+        <td>Hapus produk</td>
+        <td>Menghapus produk yang dipilih</td>
+        <td>Pilih produk: <em>Gula Pasir 1 Kg</em> &rarr; klik Hapus &rarr; konfirmasi</td>
+        <td>Data produk dihapus dari database dan tidak muncul pada daftar produk.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ══════════════════════════════════════════════════
+       UC-03 : LAPORAN PENJUALAN
+       ══════════════════════════════════════════════════ -->
+  <div class="sec-title">UC-03 &nbsp;|&nbsp; Pengujian Laporan Penjualan</div>
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th style="width:130px">Nama Fungsi</th>
+        <th style="width:160px">Skenario Uji</th>
+        <th style="width:160px">Data Masukan</th>
+        <th>Hasil yang Diharapkan</th>
+        <th>Hasil Uji</th>
+        <th style="width:80px">Kesimpulan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-no">10</td>
+        <td>Filter laporan</td>
+        <td>Melihat laporan dengan rentang tanggal valid</td>
+        <td>Tanggal dari: <em>01/06/2025</em><br/>Tanggal sampai: <em>30/06/2025</em></td>
+        <td>Sistem menampilkan tabel laporan berisi data transaksi sesuai rentang tanggal beserta total pendapatan.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">11</td>
+        <td>Filter laporan</td>
+        <td>Melihat laporan tanpa ada transaksi pada tanggal tersebut</td>
+        <td>Tanggal dari: <em>01/01/2020</em><br/>Tanggal sampai: <em>02/01/2020</em></td>
+        <td>Sistem menampilkan pesan <em>"Tidak ada data transaksi"</em> dengan total Rp 0.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">12</td>
+        <td>Cetak laporan</td>
+        <td>Mencetak / mengekspor laporan ke PDF</td>
+        <td>Klik tombol <em>Cetak Laporan</em> setelah laporan tampil</td>
+        <td>Sistem menghasilkan tampilan cetak (print preview) yang rapi dan siap dicetak.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ══════════════════════════════════════════════════
+       UC-04 : PROSES TRANSAKSI + LINEAR SEARCH
+       ══════════════════════════════════════════════════ -->
+  <div class="sec-title">UC-04 &nbsp;|&nbsp; Pengujian Proses Transaksi (Linear Search)</div>
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th style="width:130px">Nama Fungsi</th>
+        <th style="width:160px">Skenario Uji</th>
+        <th style="width:160px">Data Masukan</th>
+        <th>Hasil yang Diharapkan</th>
+        <th>Hasil Uji</th>
+        <th style="width:80px">Kesimpulan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-no">13</td>
+        <td>Pencarian produk (Linear Search)</td>
+        <td>Mencari produk dengan nama yang terdaftar</td>
+        <td>Kata kunci: <em>"Gula"</em></td>
+        <td>Algoritma <em>Linear Search</em> menelusuri array produk dan menampilkan hasil pencarian yang cocok secara real-time.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">14</td>
+        <td>Pencarian produk (Linear Search)</td>
+        <td>Mencari produk dengan nama yang tidak terdaftar</td>
+        <td>Kata kunci: <em>"XYZBarang"</em></td>
+        <td>Sistem menampilkan pesan <em>"Produk tidak ditemukan"</em> atau daftar hasil kosong.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">15</td>
+        <td>Proses transaksi</td>
+        <td>Transaksi dengan uang bayar mencukupi</td>
+        <td>Total belanja: Rp 45.000<br/>Uang bayar: Rp 50.000</td>
+        <td>Transaksi berhasil disimpan, kembalian Rp 5.000 tampil, stok produk berkurang otomatis.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">16</td>
+        <td>Proses transaksi</td>
+        <td>Uang bayar kurang dari total belanja</td>
+        <td>Total belanja: Rp 45.000<br/>Uang bayar: Rp 30.000</td>
+        <td>Sistem menampilkan pesan <em>"Uang bayar tidak mencukupi"</em> dan transaksi tidak diproses.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">17</td>
+        <td>Proses transaksi</td>
+        <td>Melakukan transaksi tanpa menambah item ke keranjang</td>
+        <td>Keranjang: <em>(kosong)</em><br/>Klik tombol Bayar</td>
+        <td>Sistem menampilkan pesan <em>"Keranjang belanja masih kosong"</em>.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ══════════════════════════════════════════════════
+       UC-05 : CETAK STRUK / INVOICE
+       ══════════════════════════════════════════════════ -->
+  <div class="sec-title">UC-05 &nbsp;|&nbsp; Pengujian Cetak Struk / Invoice</div>
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th style="width:130px">Nama Fungsi</th>
+        <th style="width:160px">Skenario Uji</th>
+        <th style="width:160px">Data Masukan</th>
+        <th>Hasil yang Diharapkan</th>
+        <th>Hasil Uji</th>
+        <th style="width:80px">Kesimpulan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-no">18</td>
+        <td>Cetak struk</td>
+        <td>Mencetak struk setelah transaksi berhasil</td>
+        <td>ID Transaksi: <em>TRX-20250610-001</em><br/>Klik tombol <em>Cetak Struk</em></td>
+        <td>Struk berisi nama toko, tanggal, daftar produk, total, uang bayar, dan kembalian tampil dalam format cetak yang rapi.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">19</td>
+        <td>Akses struk tidak valid</td>
+        <td>Mengakses URL struk dengan ID transaksi tidak ada</td>
+        <td>URL: <em>/struk/9999</em> (ID tidak ada)</td>
+        <td>Sistem menampilkan halaman <em>404 / Not Found</em> atau mengarahkan ke halaman transaksi.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ══════════════════════════════════════════════════
+       UC-06 : LOGOUT
+       ══════════════════════════════════════════════════ -->
+  <div class="sec-title">UC-06 &nbsp;|&nbsp; Pengujian Logout</div>
+  <table class="test-table">
+    <thead>
+      <tr>
+        <th>No.</th>
+        <th style="width:130px">Nama Fungsi</th>
+        <th style="width:160px">Skenario Uji</th>
+        <th style="width:160px">Data Masukan</th>
+        <th>Hasil yang Diharapkan</th>
+        <th>Hasil Uji</th>
+        <th style="width:80px">Kesimpulan</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="td-no">20</td>
+        <td>Logout sistem</td>
+        <td>Pengguna mengklik tombol logout</td>
+        <td>Klik tombol <em>Logout</em> pada navigasi &rarr; konfirmasi Ya</td>
+        <td>Sesi (session) pengguna dihapus, pengguna diarahkan ke halaman login.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+      <tr>
+        <td class="td-no">21</td>
+        <td>Proteksi halaman</td>
+        <td>Mengakses halaman dashboard tanpa login</td>
+        <td>Buka URL <em>/dashboard</em> langsung tanpa sesi login</td>
+        <td>Sistem mendeteksi sesi tidak ada dan mengarahkan pengguna ke halaman login secara otomatis.</td>
+        <td class="td-status"><span class="ok">Berhasil</span></td>
+        <td class="td-status">Valid</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ══════════════════════════════════════════════════
+       RINGKASAN HASIL PENGUJIAN
+       ══════════════════════════════════════════════════ -->
+  <div class="summary-box">
+    <h2>Ringkasan Hasil Pengujian Black Box</h2>
+    <table class="summary-table">
+      <thead>
+        <tr>
+          <th>No.</th>
+          <th>Use Case</th>
+          <th>Jumlah Skenario</th>
+          <th>Berhasil (&#10003;)</th>
+          <th>Gagal (&#10007;)</th>
+          <th>Persentase Keberhasilan</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td style="text-align:left">UC-01 Login</td>
+          <td>4</td>
+          <td>4</td>
+          <td>0</td>
+          <td>100 %</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td style="text-align:left">UC-02 Manajemen Barang</td>
+          <td>5</td>
+          <td>5</td>
+          <td>0</td>
+          <td>100 %</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td style="text-align:left">UC-03 Laporan Penjualan</td>
+          <td>3</td>
+          <td>3</td>
+          <td>0</td>
+          <td>100 %</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td style="text-align:left">UC-04 Proses Transaksi (Linear Search)</td>
+          <td>5</td>
+          <td>5</td>
+          <td>0</td>
+          <td>100 %</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td style="text-align:left">UC-05 Cetak Struk / Invoice</td>
+          <td>2</td>
+          <td>2</td>
+          <td>0</td>
+          <td>100 %</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td style="text-align:left">UC-06 Logout</td>
+          <td>2</td>
+          <td>2</td>
+          <td>0</td>
+          <td>100 %</td>
+        </tr>
+        <tr class="total-row">
+          <td colspan="2"><strong>Total Keseluruhan</strong></td>
+          <td><strong>21</strong></td>
+          <td><strong>21</strong></td>
+          <td><strong>0</strong></td>
+          <td><strong>100 %</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── KESIMPULAN PENGUJIAN ── -->
+  <div class="conclusion">
+    <p>
+      Berdasarkan hasil pengujian <em>Black Box Testing</em> dengan metode
+      <em>Equivalence Partitioning</em> yang telah dilakukan terhadap 21 skenario uji
+      pada 6 use case Sistem Point of Sales (POS) Toko Fenny Grosir, seluruh skenario
+      menghasilkan output sesuai dengan yang diharapkan. Tidak terdapat skenario yang
+      menghasilkan output yang tidak sesuai (gagal), sehingga tingkat keberhasilan
+      pengujian mencapai <strong>100%</strong>. Hal ini menunjukkan bahwa sistem yang
+      dibangun telah berfungsi dengan baik dan sesuai dengan spesifikasi kebutuhan
+      fungsional yang telah ditetapkan.
+    </p>
+  </div>
+
+</div><!-- /page -->
+
+<script>
+/* ── Download PNG seluruh halaman menggunakan html2canvas ── */
+function dlPNG() {
+  const el = document.getElementById('main-page');
+  if (!el) return;
+  if (typeof html2canvas === 'undefined') {
+    const s = document.createElement('script');
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
+    s.onload = function(){ runCapture(el); };
+    s.onerror = function(){
+      alert('Koneksi internet diperlukan.\nGunakan Cetak > Simpan sebagai PDF sebagai alternatif.');
+    };
+    document.head.appendChild(s);
+  } else {
+    runCapture(el);
+  }
+}
+function runCapture(el) {
+  html2canvas(el, {
+    scale: 2,
+    backgroundColor: '#ffffff',
+    useCORS: true,
+    logging: false,
+    windowWidth: 1100
+  }).then(function(canvas){
+    canvas.toBlob(function(blob){
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'pengujian_blackbox_pos_fenny.png';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    }, 'image/png');
+  }).catch(function(err){
+    alert('Export gagal: ' + err.message);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Use Case Diagram – POS System Toko Fenny Grosir</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px;
+      color: #e2e8f0;
+    }
+
+    .header {
+      text-align: center;
+      max-width: 960px;
+      margin-bottom: 36px;
+      animation: fadeDown 0.7s ease both;
+    }
+    .header .badge {
+      display: inline-block;
+      background: linear-gradient(90deg, #6366f1, #a855f7);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 5px 18px;
+      border-radius: 50px;
+      margin-bottom: 14px;
+    }
+    .header h1 {
+      font-family: 'Poppins', sans-serif;
+      font-size: clamp(17px, 2.6vw, 24px);
+      font-weight: 800;
+      line-height: 1.4;
+      background: linear-gradient(90deg, #a78bfa, #60a5fa, #34d399);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+    .header p { font-size: 13px; color: #94a3b8; }
+
+    .canvas-wrapper {
+      width: 100%;
+      max-width: 1150px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 24px;
+      backdrop-filter: blur(12px);
+      padding: 10px;
+      box-shadow: 0 32px 80px rgba(0,0,0,0.5);
+      animation: fadeUp 0.8s ease 0.2s both;
+    }
+    svg#diagram { width: 100%; height: auto; display: block; }
+
+    .legend {
+      margin-top: 28px;
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      justify-content: center;
+      animation: fadeUp 0.8s ease 0.4s both;
+    }
+    .legend-item { display: flex; align-items: center; gap: 8px; font-size: 12px; color: #94a3b8; }
+    .legend-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+
+    .uc-table-wrap {
+      max-width: 980px; width: 100%;
+      margin-top: 32px;
+      animation: fadeUp 0.8s ease 0.6s both;
+    }
+    .uc-table-wrap table {
+      width: 100%; border-collapse: collapse; font-size: 13px;
+      background: rgba(255,255,255,0.04);
+      border-radius: 16px; overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.08);
+    }
+    .uc-table-wrap thead tr { background: linear-gradient(90deg, rgba(99,102,241,0.4), rgba(139,92,246,0.3)); }
+    .uc-table-wrap th {
+      padding: 14px 16px; text-align: left; color: #a78bfa;
+      font-family: 'Poppins', sans-serif; font-size: 10.5px;
+      letter-spacing: 1px; text-transform: uppercase;
+    }
+    .uc-table-wrap tbody tr { border-top: 1px solid rgba(255,255,255,0.06); }
+    .uc-table-wrap tbody tr:nth-child(even) { background: rgba(255,255,255,0.02); }
+    .uc-table-wrap td { padding: 12px 16px; vertical-align: top; color: #94a3b8; }
+    .uc-name { color: #e2e8f0; font-weight: 600; }
+    .badge-admin { background: rgba(99,102,241,0.22); color: #a78bfa; padding: 3px 11px; border-radius: 50px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .badge-kasir { background: rgba(249,115,22,0.2); color: #fb923c; padding: 3px 11px; border-radius: 50px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .actor-badges { display: flex; gap: 5px; flex-wrap: wrap; }
+
+    .footer { margin-top: 24px; font-size: 11px; color: #475569; text-align: center; animation: fadeUp 0.8s ease 0.8s both; }
+
+    @keyframes fadeDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeUp   { from { opacity:0; transform:translateY(20px);  } to { opacity:1; transform:translateY(0); } }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div class="badge">Use Case Diagram</div>
+  <h1>Implementasi Point of Sales (POS) System Sebagai Strategi<br>Pengembangan Usaha pada UMKM Toko Fenny Grosir</h1>
+  <p>Menggunakan Algoritma <strong>Linear Search</strong> &nbsp;|&nbsp; Metode Pengembangan: <strong>Waterfall</strong></p>
+</div>
+
+<div class="canvas-wrapper">
+  <!--
+    ViewBox  : 1150 x 800
+    Admin    : x=82   (left)
+    Kasir    : x=1068 (right)
+    System   : x=200 … x=950  y=18 … y=782
+    Use Cases (cx=530):
+      UC-01 Login              y=105
+      UC-02 Manajemen Barang   y=210
+      UC-03 Laporan Penjualan  y=315
+      UC-04 Proses Transaksi   y=435
+      UC-05 Pencarian Produk   y=540  (include dari UC-04, cx=660 digeser ke kanan)
+      UC-06 Cetak Struk        y=635
+      UC-07 Logout             y=730
+  -->
+  <svg id="diagram" viewBox="0 0 1150 800" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <linearGradient id="bgGrad" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"  stop-color="#1e1b4b"/>
+        <stop offset="100%" stop-color="#0f172a"/>
+      </linearGradient>
+      <linearGradient id="sysGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#312e81" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#1e3a5f" stop-opacity="0.25"/>
+      </linearGradient>
+      <!-- UC colours -->
+      <linearGradient id="ucIndigo" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"  stop-color="#6366f1"/><stop offset="100%" stop-color="#4f46e5"/>
+      </linearGradient>
+      <linearGradient id="ucViolet" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"  stop-color="#7c3aed"/><stop offset="100%" stop-color="#5b21b6"/>
+      </linearGradient>
+      <linearGradient id="ucSky" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"  stop-color="#0ea5e9"/><stop offset="100%" stop-color="#0284c7"/>
+      </linearGradient>
+      <linearGradient id="ucOrange" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"  stop-color="#f97316"/><stop offset="100%" stop-color="#ea580c"/>
+      </linearGradient>
+      <linearGradient id="ucGreen" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"  stop-color="#059669"/><stop offset="100%" stop-color="#047857"/>
+      </linearGradient>
+      <linearGradient id="ucAmber" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%"  stop-color="#d97706"/><stop offset="100%" stop-color="#b45309"/>
+      </linearGradient>
+      <!-- Actor gradients -->
+      <linearGradient id="adminGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#a78bfa"/><stop offset="100%" stop-color="#6366f1"/>
+      </linearGradient>
+      <linearGradient id="kasirGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%"  stop-color="#fdba74"/><stop offset="100%" stop-color="#f97316"/>
+      </linearGradient>
+      <!-- Filters -->
+      <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+        <feGaussianBlur stdDeviation="4" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+        <feGaussianBlur stdDeviation="6" result="b"/>
+        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+      </filter>
+      <!-- Arrows -->
+      <marker id="arrGray"   markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#64748b"/></marker>
+      <marker id="arrOrange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#fb923c"/></marker>
+      <marker id="arrSky"    markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#38bdf8"/></marker>
+      <marker id="arrDash"   markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0,10 3.5,0 7" fill="#94a3b8"/></marker>
+    </defs>
+
+    <!-- BG -->
+    <rect width="1150" height="800" rx="16" fill="url(#bgGrad)"/>
+
+    <!-- ── System Boundary ── -->
+    <rect x="200" y="18" width="750" height="764" rx="18"
+          fill="url(#sysGrad)"
+          stroke="rgba(99,102,241,0.55)" stroke-width="2" stroke-dasharray="10,5"/>
+    <text x="575" y="48" text-anchor="middle" font-family="'Poppins',sans-serif"
+          font-size="14" font-weight="700" fill="#a78bfa" letter-spacing="1">« System »</text>
+    <text x="575" y="66" text-anchor="middle" font-family="'Inter',sans-serif"
+          font-size="11" fill="#7c3aed" font-weight="500">POS System – Toko Fenny Grosir</text>
+
+    <!-- ═══════════════════════════════════════
+         USE CASES  (cx=530, rx=145, ry=26)
+         except UC-05 Pencarian at cx=680 (indented right)
+         ═══════════════════════════════════════ -->
+
+    <!-- UC-01  Login Sistem  (Admin + Kasir) -->
+    <ellipse cx="530" cy="105" rx="148" ry="27" fill="url(#ucIndigo)" opacity="0.92" filter="url(#glow)"/>
+    <ellipse cx="530" cy="105" rx="148" ry="27" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="530" y="110" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#e0e7ff">Login Sistem</text>
+
+    <!-- UC-02  Manajemen Barang  (Admin) -->
+    <ellipse cx="530" cy="210" rx="148" ry="27" fill="url(#ucViolet)" opacity="0.92" filter="url(#glow)"/>
+    <ellipse cx="530" cy="210" rx="148" ry="27" fill="none" stroke="#c4b5fd" stroke-width="1.5"/>
+    <text x="530" y="215" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#ede9fe">Manajemen Barang</text>
+
+    <!-- UC-03  Laporan Penjualan  (Admin) -->
+    <ellipse cx="530" cy="315" rx="148" ry="27" fill="url(#ucGreen)" opacity="0.92" filter="url(#glow)"/>
+    <ellipse cx="530" cy="315" rx="148" ry="27" fill="none" stroke="#6ee7b7" stroke-width="1.5"/>
+    <text x="530" y="320" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#d1fae5">Laporan Penjualan</text>
+
+    <!-- UC-04  Proses Transaksi Penjualan  (Kasir) -->
+    <ellipse cx="490" cy="435" rx="148" ry="27" fill="url(#ucOrange)" opacity="0.92" filter="url(#glow)"/>
+    <ellipse cx="490" cy="435" rx="148" ry="27" fill="none" stroke="#fdba74" stroke-width="1.5"/>
+    <text x="490" y="432" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#fff7ed">Proses Transaksi</text>
+    <text x="490" y="446" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="#fed7aa">Penjualan</text>
+
+    <!-- UC-05  Pencarian Produk (Linear Search)  — «include» dari UC-04 -->
+    <ellipse cx="700" cy="530" rx="175" ry="27" fill="url(#ucSky)" opacity="0.92" filter="url(#glow)"/>
+    <ellipse cx="700" cy="530" rx="175" ry="27" fill="none" stroke="#7dd3fc" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="700" y="527" text-anchor="middle" font-family="'Inter',sans-serif" font-size="12.5" font-weight="600" fill="#e0f2fe">Pencarian Produk</text>
+    <text x="700" y="540" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9.5" fill="#bae6fd">(Algoritma Linear Search)</text>
+
+    <!-- «include» arrow: UC-04 → UC-05 -->
+    <line x1="588" y1="455" x2="630" y2="508" stroke="#38bdf8" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrSky)"/>
+    <!-- «include» label -->
+    <rect x="560" y="472" width="68" height="16" rx="5" fill="rgba(14,165,233,0.2)"/>
+    <text x="594" y="484" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" fill="#7dd3fc">«include»</text>
+
+    <!-- UC-06  Cetak Struk / Invoice  (Kasir) -->
+    <ellipse cx="530" cy="635" rx="148" ry="27" fill="url(#ucAmber)" opacity="0.92" filter="url(#glow)"/>
+    <ellipse cx="530" cy="635" rx="148" ry="27" fill="none" stroke="#fcd34d" stroke-width="1.5"/>
+    <text x="530" y="640" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#fef9c3">Cetak Struk / Invoice</text>
+
+    <!-- UC-07  Logout  (Admin + Kasir) -->
+    <ellipse cx="530" cy="733" rx="148" ry="27" fill="url(#ucIndigo)" opacity="0.92" filter="url(#glow)"/>
+    <ellipse cx="530" cy="733" rx="148" ry="27" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="530" y="738" text-anchor="middle" font-family="'Inter',sans-serif" font-size="13" font-weight="600" fill="#e0e7ff">Logout</text>
+
+    <!-- ═══════════════════════════════════════
+         UC NUMBER BADGES
+         ═══════════════════════════════════════ -->
+    <g font-family="'Poppins',sans-serif" font-size="10" font-weight="700">
+      <circle cx="410" cy="105" r="11" fill="#312e81"/><text x="410" y="109" text-anchor="middle" fill="#a78bfa">1</text>
+      <circle cx="410" cy="210" r="11" fill="#4c1d95"/><text x="410" y="214" text-anchor="middle" fill="#c4b5fd">2</text>
+      <circle cx="410" cy="315" r="11" fill="#064e3b"/><text x="410" y="319" text-anchor="middle" fill="#34d399">3</text>
+      <circle cx="370" cy="435" r="11" fill="#431407"/><text x="370" y="439" text-anchor="middle" fill="#fb923c">4</text>
+      <circle cx="553" cy="530" r="11" fill="#075985"/><text x="553" y="534" text-anchor="middle" fill="#38bdf8">5</text>
+      <circle cx="410" cy="635" r="11" fill="#451a03"/><text x="410" y="639" text-anchor="middle" fill="#fcd34d">6</text>
+      <circle cx="410" cy="733" r="11" fill="#312e81"/><text x="410" y="737" text-anchor="middle" fill="#a78bfa">7</text>
+    </g>
+
+    <!-- ═══════════════════════════════════════
+         ACTOR: ADMIN  (x=82)
+         Centered vertically around y=210 (top 3 UCs)
+         ═══════════════════════════════════════ -->
+    <circle cx="82" cy="175" r="24" fill="url(#adminGrad)" stroke="#a78bfa" stroke-width="2" filter="url(#softGlow)"/>
+    <circle cx="75" cy="170" r="2.8" fill="#1e1b4b"/>
+    <circle cx="89" cy="170" r="2.8" fill="#1e1b4b"/>
+    <path d="M76 182 Q82 188 88 182" stroke="#1e1b4b" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <line x1="82" y1="199" x2="82" y2="268" stroke="#a78bfa" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="82" y1="218" x2="44"  y2="242" stroke="#a78bfa" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="82" y1="218" x2="120" y2="242" stroke="#a78bfa" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="82" y1="268" x2="54"  y2="306" stroke="#a78bfa" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="82" y1="268" x2="110" y2="306" stroke="#a78bfa" stroke-width="3.5" stroke-linecap="round"/>
+    <rect x="28" y="314" width="108" height="30" rx="9" fill="rgba(99,102,241,0.25)" stroke="#6366f1" stroke-width="1.5"/>
+    <text x="82" y="334" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="14" font-weight="700" fill="#a78bfa">Admin</text>
+
+    <!-- ═══════════════════════════════════════
+         ACTOR: KASIR  (x=1068)
+         Centered vertically around y=535 (bottom 3 UCs + shared)
+         ═══════════════════════════════════════ -->
+    <circle cx="1068" cy="490" r="24" fill="url(#kasirGrad)" stroke="#fb923c" stroke-width="2" filter="url(#softGlow)"/>
+    <circle cx="1061" cy="485" r="2.8" fill="#431407"/>
+    <circle cx="1075" cy="485" r="2.8" fill="#431407"/>
+    <path d="M1062 497 Q1068 503 1074 497" stroke="#431407" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+    <line x1="1068" y1="514" x2="1068" y2="583" stroke="#fb923c" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="1068" y1="533" x2="1030" y2="557" stroke="#fb923c" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="1068" y1="533" x2="1106" y2="557" stroke="#fb923c" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="1068" y1="583" x2="1040" y2="621" stroke="#fb923c" stroke-width="3.5" stroke-linecap="round"/>
+    <line x1="1068" y1="583" x2="1096" y2="621" stroke="#fb923c" stroke-width="3.5" stroke-linecap="round"/>
+    <rect x="1014" y="629" width="108" height="30" rx="9" fill="rgba(249,115,22,0.2)" stroke="#f97316" stroke-width="1.5"/>
+    <text x="1068" y="649" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="14" font-weight="700" fill="#fb923c">Kasir</text>
+
+    <!-- ═══════════════════════════════════════
+         LINES — ADMIN → Use Cases
+         Admin right edge ≈ x=157
+         UC left edge    ≈ x=382
+         ═══════════════════════════════════════ -->
+    <!-- Admin → UC-01 Login -->
+    <line x1="157" y1="182" x2="382" y2="108" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrGray)"/>
+    <!-- Admin → UC-02 Manajemen Barang -->
+    <line x1="157" y1="210" x2="382" y2="210" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrGray)"/>
+    <!-- Admin → UC-03 Laporan Penjualan -->
+    <line x1="157" y1="240" x2="382" y2="312" stroke="#64748b" stroke-width="1.6" marker-end="url(#arrGray)"/>
+    <!-- Admin → UC-07 Logout -->
+    <line x1="157" y1="258" x2="382" y2="720" stroke="#64748b" stroke-width="1.6" stroke-dasharray="6,3" marker-end="url(#arrDash)"/>
+    <!-- «include» label Admin→Logout (dashed note) -->
+    <rect x="168" y="480" width="68" height="16" rx="5" fill="rgba(100,116,139,0.2)"/>
+    <text x="202" y="492" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" fill="#94a3b8">«include»</text>
+
+    <!-- ═══════════════════════════════════════
+         LINES — KASIR → Use Cases
+         Kasir left edge ≈ x=993
+         UC right edge   ≈ x=678
+         ═══════════════════════════════════════ -->
+    <!-- Kasir → UC-01 Login -->
+    <line x1="993" y1="474" x2="678" y2="116" stroke="#64748b" stroke-width="1.6" stroke-dasharray="6,3" marker-end="url(#arrDash)"/>
+    <!-- Kasir → UC-04 Proses Transaksi -->
+    <line x1="993" y1="500" x2="638" y2="440" stroke="#fb923c" stroke-width="1.6" marker-end="url(#arrOrange)"/>
+    <!-- Kasir → UC-06 Cetak Struk -->
+    <line x1="993" y1="520" x2="678" y2="638" stroke="#fb923c" stroke-width="1.6" marker-end="url(#arrOrange)"/>
+    <!-- Kasir → UC-07 Logout -->
+    <line x1="993" y1="538" x2="678" y2="730" stroke="#64748b" stroke-width="1.6" stroke-dasharray="6,3" marker-end="url(#arrDash)"/>
+
+    <!-- «include» label Kasir→Login -->
+    <rect x="848" y="280" width="68" height="16" rx="5" fill="rgba(100,116,139,0.2)"/>
+    <text x="882" y="292" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" fill="#94a3b8">«include»</text>
+    <!-- «include» label Kasir→Logout -->
+    <rect x="848" y="648" width="68" height="16" rx="5" fill="rgba(100,116,139,0.2)"/>
+    <text x="882" y="660" text-anchor="middle" font-family="'Inter',sans-serif" font-size="9" fill="#94a3b8">«include»</text>
+
+  </svg>
+</div>
+
+<!-- ── LEGEND ── -->
+<div class="legend">
+  <div class="legend-item">
+    <div class="legend-dot" style="background:linear-gradient(135deg,#6366f1,#4f46e5)"></div>
+    UC – Admin &amp; Kasir
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:linear-gradient(135deg,#7c3aed,#5b21b6)"></div>
+    UC – Admin
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:linear-gradient(135deg,#f97316,#ea580c)"></div>
+    UC – Kasir
+  </div>
+  <div class="legend-item">
+    <div class="legend-dot" style="background:linear-gradient(135deg,#0ea5e9,#0284c7)"></div>
+    UC – «include» Linear Search
+  </div>
+  <div class="legend-item" style="gap:6px;">
+    <svg width="34" height="10"><line x1="0" y1="5" x2="30" y2="5" stroke="#64748b" stroke-width="2"/><polygon points="30,2 34,5 30,8" fill="#64748b"/></svg>
+    Association
+  </div>
+  <div class="legend-item" style="gap:6px;">
+    <svg width="34" height="10"><line x1="0" y1="5" x2="30" y2="5" stroke="#38bdf8" stroke-width="2" stroke-dasharray="5,2"/><polygon points="30,2 34,5 30,8" fill="#38bdf8"/></svg>
+    «include»
+  </div>
+</div>
+
+<!-- ── USE CASE TABLE ── -->
+<div class="uc-table-wrap">
+  <table>
+    <thead>
+      <tr>
+        <th>No</th>
+        <th>Use Case</th>
+        <th>Aktor</th>
+        <th>Deskripsi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:#818cf8;font-weight:700;">UC-01</td>
+        <td class="uc-name">Login Sistem</td>
+        <td><div class="actor-badges"><span class="badge-admin">Admin</span><span class="badge-kasir">Kasir</span></div></td>
+        <td>Admin dan Kasir melakukan autentikasi dengan memasukkan username dan password untuk mengakses sistem POS.</td>
+      </tr>
+      <tr>
+        <td style="color:#c4b5fd;font-weight:700;">UC-02</td>
+        <td class="uc-name">Manajemen Barang</td>
+        <td><div class="actor-badges"><span class="badge-admin">Admin</span></div></td>
+        <td>Admin mengelola data barang meliputi tambah, ubah, hapus produk, serta memantau dan memperbarui stok barang di toko.</td>
+      </tr>
+      <tr>
+        <td style="color:#34d399;font-weight:700;">UC-03</td>
+        <td class="uc-name">Laporan Penjualan</td>
+        <td><div class="actor-badges"><span class="badge-admin">Admin</span></div></td>
+        <td>Admin mengakses laporan rekap penjualan harian/bulanan untuk evaluasi performa toko dan pengambilan keputusan bisnis.</td>
+      </tr>
+      <tr>
+        <td style="color:#fb923c;font-weight:700;">UC-04</td>
+        <td class="uc-name">Proses Transaksi Penjualan</td>
+        <td><div class="actor-badges"><span class="badge-kasir">Kasir</span></div></td>
+        <td>Kasir memproses penjualan: memilih produk, memasukkan jumlah, menghitung total harga, menerima pembayaran, dan mengembalikan kembalian. <strong style="color:#38bdf8;">«include»</strong> pencarian produk.</td>
+      </tr>
+      <tr>
+        <td style="color:#38bdf8;font-weight:700;">UC-05</td>
+        <td class="uc-name">Pencarian Produk <em style="font-size:10px;color:#7dd3fc;">(Linear Search)</em></td>
+        <td><div class="actor-badges"><span class="badge-kasir">Kasir</span></div></td>
+        <td>Sistem mencari produk berdasarkan nama/kode menggunakan <strong style="color:#38bdf8;">Algoritma Linear Search</strong> secara sekuensial. Merupakan bagian wajib (<em>include</em>) dari proses transaksi.</td>
+      </tr>
+      <tr>
+        <td style="color:#fcd34d;font-weight:700;">UC-06</td>
+        <td class="uc-name">Cetak Struk / Invoice</td>
+        <td><div class="actor-badges"><span class="badge-kasir">Kasir</span></div></td>
+        <td>Setelah transaksi selesai, Kasir mencetak struk berisi rincian produk, total harga, jumlah bayar, dan kembalian sebagai bukti transaksi.</td>
+      </tr>
+      <tr>
+        <td style="color:#818cf8;font-weight:700;">UC-07</td>
+        <td class="uc-name">Logout</td>
+        <td><div class="actor-badges"><span class="badge-admin">Admin</span><span class="badge-kasir">Kasir</span></div></td>
+        <td>Admin dan Kasir mengakhiri sesi kerja dengan keluar dari sistem untuk menjaga keamanan data dan akses sistem POS.</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="footer">
+  © 2026 &nbsp;·&nbsp; Skripsi – Implementasi POS System UMKM Toko Fenny Grosir &nbsp;·&nbsp; Algoritma Linear Search &nbsp;·&nbsp; Metode Waterfall
+</div>
+
+</body>
+</html>

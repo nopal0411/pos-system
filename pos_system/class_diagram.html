@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Class Diagram – POS System Toko Fenny Grosir</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',sans-serif;background:linear-gradient(135deg,#0f0c29,#302b63,#24243e);min-height:100vh;padding:40px 16px;color:#e2e8f0}
+.hdr{text-align:center;max-width:960px;margin:0 auto 32px}
+.hdr .badge{display:inline-block;background:linear-gradient(90deg,#059669,#0ea5e9);color:#fff;font-size:10px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 16px;border-radius:50px;margin-bottom:12px}
+.hdr h1{font-family:'Poppins',sans-serif;font-size:clamp(16px,2.4vw,22px);font-weight:800;background:linear-gradient(90deg,#34d399,#60a5fa,#a78bfa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.4;margin-bottom:8px}
+.hdr p{font-size:12px;color:#94a3b8}
+.canvas-wrapper{max-width:1200px;margin:0 auto;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:16px;box-shadow:0 24px 60px rgba(0,0,0,0.4);backdrop-filter:blur(10px)}
+.canvas-wrapper svg{width:100%;height:auto;display:block}
+
+/* legend */
+.legend{max-width:1200px;margin:24px auto 0;display:flex;gap:20px;flex-wrap:wrap;justify-content:center}
+.leg-item{display:flex;align-items:center;gap:8px;font-size:12px;color:#94a3b8}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="badge">Class Diagram</div>
+  <h1>Class Diagram – POS System Toko Fenny Grosir</h1>
+  <p>Database: <strong>pos_fenny</strong> &nbsp;·&nbsp; 5 Tabel Utama beserta Relasi &nbsp;·&nbsp; MySQL InnoDB</p>
+</div>
+
+<div class="canvas-wrapper">
+<!--
+  LAYOUT (viewBox 1200 × 860)
+  ┌─────────────────────────────────────────────────┐
+  │  users (200,60)   kategori (780,60)             │
+  │                                                 │
+  │  transaksi (120,320)  produk (620,320)          │
+  │                                                 │
+  │  detail_transaksi (370,580)                     │
+  └─────────────────────────────────────────────────┘
+-->
+<svg viewBox="0 0 1200 870" xmlns="http://www.w3.org/2000/svg">
+<defs>
+  <linearGradient id="hdrIndigo" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#4f46e5"/><stop offset="100%" stop-color="#3730a3"/>
+  </linearGradient>
+  <linearGradient id="hdrViolet" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#7c3aed"/><stop offset="100%" stop-color="#5b21b6"/>
+  </linearGradient>
+  <linearGradient id="hdrGreen" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#059669"/><stop offset="100%" stop-color="#047857"/>
+  </linearGradient>
+  <linearGradient id="hdrOrange" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#d97706"/><stop offset="100%" stop-color="#b45309"/>
+  </linearGradient>
+  <linearGradient id="hdrSky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0%" stop-color="#0284c7"/><stop offset="100%" stop-color="#0369a1"/>
+  </linearGradient>
+
+  <!-- Arrow for association -->
+  <marker id="assoc" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <polygon points="0 0,10 3.5,0 7" fill="none" stroke="#64748b" stroke-width="1.5"/>
+  </marker>
+  <!-- Diamond for composition -->
+  <marker id="comp" markerWidth="14" markerHeight="10" refX="1" refY="5" orient="auto">
+    <polygon points="0 5,7 0,14 5,7 10" fill="#6366f1" stroke="#6366f1" stroke-width="1"/>
+  </marker>
+  <!-- Open arrow for aggregation -->
+  <marker id="agg" markerWidth="14" markerHeight="10" refX="1" refY="5" orient="auto">
+    <polygon points="0 5,7 0,14 5,7 10" fill="none" stroke="#a78bfa" stroke-width="1.5"/>
+  </marker>
+  <marker id="fk" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+    <polygon points="0 0,10 3.5,0 7" fill="#f59e0b"/>
+  </marker>
+
+  <filter id="glow2"><feGaussianBlur stdDeviation="3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+</defs>
+
+<rect width="1200" height="870" rx="14" fill="#0f172a"/>
+
+<!-- ─────────────────────────────────────
+     CLASS: users
+     x=80 y=50 w=280 h=240
+     ───────────────────────────────────── -->
+<g id="cls-users" filter="url(#glow2)">
+  <rect x="80" y="50" width="280" height="245" rx="10" fill="#1e1b4b" stroke="#6366f1" stroke-width="2"/>
+  <!-- Header -->
+  <rect x="80" y="50" width="280" height="42" rx="10" fill="url(#hdrIndigo)"/>
+  <rect x="80" y="78" width="280" height="14" fill="#3730a3"/>
+  <text x="100" y="68" font-family="'Poppins',sans-serif" font-size="11" font-weight="700" fill="white">≪entity≫</text>
+  <text x="220" y="84" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="13" font-weight="800" fill="white">users</text>
+  <!-- Divider -->
+  <line x1="80" y1="92" x2="360" y2="92" stroke="#6366f1" stroke-width="1"/>
+  <!-- Attributes -->
+  <text x="96" y="112" font-family="'JetBrains Mono',monospace" font-size="11" fill="#fbbf24">🔑 id_user : INT (PK, AI)</text>
+  <text x="96" y="132" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   nama : VARCHAR(100)</text>
+  <text x="96" y="152" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   username : VARCHAR(50)</text>
+  <text x="96" y="172" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   password : VARCHAR(255)</text>
+  <text x="96" y="192" font-family="'JetBrains Mono',monospace" font-size="11" fill="#c4b5fd">   role : ENUM(admin|kasir)</text>
+  <text x="96" y="212" font-family="'JetBrains Mono',monospace" font-size="11" fill="#64748b">   created_at : TIMESTAMP</text>
+  <!-- Divider -->
+  <line x1="80" y1="222" x2="360" y2="222" stroke="#6366f1" stroke-width="1" stroke-dasharray="4,3"/>
+  <!-- Methods -->
+  <text x="96" y="240" font-family="'JetBrains Mono',monospace" font-size="10" fill="#818cf8">+ login(user,pass) : bool</text>
+  <text x="96" y="256" font-family="'JetBrains Mono',monospace" font-size="10" fill="#818cf8">+ logout() : void</text>
+  <text x="96" y="272" font-family="'JetBrains Mono',monospace" font-size="10" fill="#818cf8">+ cekRole() : string</text>
+</g>
+
+<!-- ─────────────────────────────────────
+     CLASS: kategori
+     x=840 y=50 w=280 h=180
+     ───────────────────────────────────── -->
+<g id="cls-kategori" filter="url(#glow2)">
+  <rect x="840" y="50" width="280" height="175" rx="10" fill="#1e1b4b" stroke="#7c3aed" stroke-width="2"/>
+  <rect x="840" y="50" width="280" height="42" rx="10" fill="url(#hdrViolet)"/>
+  <rect x="840" y="78" width="280" height="14" fill="#4c1d95"/>
+  <text x="860" y="68" font-family="'Poppins',sans-serif" font-size="11" font-weight="700" fill="white">≪entity≫</text>
+  <text x="980" y="84" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="13" font-weight="800" fill="white">kategori</text>
+  <line x1="840" y1="92" x2="1120" y2="92" stroke="#7c3aed" stroke-width="1"/>
+  <text x="856" y="112" font-family="'JetBrains Mono',monospace" font-size="11" fill="#fbbf24">🔑 id_kategori : INT (PK, AI)</text>
+  <text x="856" y="132" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   nama_kategori : VARCHAR(100)</text>
+  <text x="856" y="152" font-family="'JetBrains Mono',monospace" font-size="11" fill="#64748b">   created_at : TIMESTAMP</text>
+  <line x1="840" y1="162" x2="1120" y2="162" stroke="#7c3aed" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="856" y="180" font-family="'JetBrains Mono',monospace" font-size="10" fill="#c4b5fd">+ getAll() : array</text>
+  <text x="856" y="196" font-family="'JetBrains Mono',monospace" font-size="10" fill="#c4b5fd">+ findById(id) : object</text>
+  <text x="856" y="212" font-family="'JetBrains Mono',monospace" font-size="10" fill="#c4b5fd">+ save() : bool</text>
+</g>
+
+<!-- ─────────────────────────────────────
+     CLASS: produk
+     x=600 y=300 w=320 h=300
+     ───────────────────────────────────── -->
+<g id="cls-produk" filter="url(#glow2)">
+  <rect x="600" y="300" width="320" height="305" rx="10" fill="#1e1b4b" stroke="#059669" stroke-width="2"/>
+  <rect x="600" y="300" width="320" height="42" rx="10" fill="url(#hdrGreen)"/>
+  <rect x="600" y="328" width="320" height="14" fill="#065f46"/>
+  <text x="620" y="318" font-family="'Poppins',sans-serif" font-size="11" font-weight="700" fill="white">≪entity≫</text>
+  <text x="760" y="334" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="13" font-weight="800" fill="white">produk</text>
+  <line x1="600" y1="342" x2="920" y2="342" stroke="#059669" stroke-width="1"/>
+  <text x="616" y="362" font-family="'JetBrains Mono',monospace" font-size="11" fill="#fbbf24">🔑 id_produk : INT (PK, AI)</text>
+  <text x="616" y="382" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f59e0b">🔗 id_kategori : INT (FK)</text>
+  <text x="616" y="402" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   nama_produk : VARCHAR(150)</text>
+  <text x="616" y="422" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   harga_beli : DECIMAL(15,2)</text>
+  <text x="616" y="442" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   harga_jual : DECIMAL(15,2)</text>
+  <text x="616" y="462" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   stok : INT</text>
+  <text x="616" y="482" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   gambar : VARCHAR(255)</text>
+  <text x="616" y="502" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   deskripsi : TEXT</text>
+  <text x="616" y="522" font-family="'JetBrains Mono',monospace" font-size="11" fill="#64748b">   created_at : TIMESTAMP</text>
+  <line x1="600" y1="532" x2="920" y2="532" stroke="#059669" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="616" y="550" font-family="'JetBrains Mono',monospace" font-size="10" fill="#34d399">+ linearSearch(keyword) : array</text>
+  <text x="616" y="568" font-family="'JetBrains Mono',monospace" font-size="10" fill="#34d399">+ updateStok(id,qty) : bool</text>
+  <text x="616" y="586" font-family="'JetBrains Mono',monospace" font-size="10" fill="#34d399">+ save() / delete() : bool</text>
+</g>
+
+<!-- ─────────────────────────────────────
+     CLASS: transaksi
+     x=50 y=320 w=320 h=280
+     ───────────────────────────────────── -->
+<g id="cls-transaksi" filter="url(#glow2)">
+  <rect x="50" y="320" width="320" height="285" rx="10" fill="#1e1b4b" stroke="#d97706" stroke-width="2"/>
+  <rect x="50" y="320" width="320" height="42" rx="10" fill="url(#hdrOrange)"/>
+  <rect x="50" y="348" width="320" height="14" fill="#92400e"/>
+  <text x="70" y="338" font-family="'Poppins',sans-serif" font-size="11" font-weight="700" fill="white">≪entity≫</text>
+  <text x="210" y="354" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="13" font-weight="800" fill="white">transaksi</text>
+  <line x1="50" y1="362" x2="370" y2="362" stroke="#d97706" stroke-width="1"/>
+  <text x="66" y="382" font-family="'JetBrains Mono',monospace" font-size="11" fill="#fbbf24">🔑 id_transaksi : INT (PK, AI)</text>
+  <text x="66" y="402" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   no_transaksi : VARCHAR(30)</text>
+  <text x="66" y="422" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   tanggal : DATETIME</text>
+  <text x="66" y="442" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   total_harga : DECIMAL(15,2)</text>
+  <text x="66" y="462" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   uang_bayar : DECIMAL(15,2)</text>
+  <text x="66" y="482" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   kembalian : DECIMAL(15,2)</text>
+  <text x="66" y="502" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f59e0b">🔗 id_user : INT (FK)</text>
+  <text x="66" y="522" font-family="'JetBrains Mono',monospace" font-size="11" fill="#64748b">   created_at : TIMESTAMP</text>
+  <line x1="50" y1="532" x2="370" y2="532" stroke="#d97706" stroke-width="1" stroke-dasharray="4,3"/>
+  <text x="66" y="550" font-family="'JetBrains Mono',monospace" font-size="10" fill="#fcd34d">+ proses(kasir,items) : bool</text>
+  <text x="66" y="568" font-family="'JetBrains Mono',monospace" font-size="10" fill="#fcd34d">+ getLaporan(dari,sampai) : array</text>
+  <text x="66" y="586" font-family="'JetBrains Mono',monospace" font-size="10" fill="#fcd34d">+ getStruk(id) : object</text>
+</g>
+
+<!-- ─────────────────────────────────────
+     CLASS: detail_transaksi
+     x=330 y=660 w=340 h=185
+     ───────────────────────────────────── -->
+<g id="cls-detail" filter="url(#glow2)">
+  <rect x="330" y="660" width="340" height="190" rx="10" fill="#1e1b4b" stroke="#0284c7" stroke-width="2"/>
+  <rect x="330" y="660" width="340" height="42" rx="10" fill="url(#hdrSky)"/>
+  <rect x="330" y="688" width="340" height="14" fill="#075985"/>
+  <text x="350" y="678" font-family="'Poppins',sans-serif" font-size="11" font-weight="700" fill="white">≪entity≫</text>
+  <text x="500" y="694" text-anchor="middle" font-family="'Poppins',sans-serif" font-size="13" font-weight="800" fill="white">detail_transaksi</text>
+  <line x1="330" y1="702" x2="670" y2="702" stroke="#0284c7" stroke-width="1"/>
+  <text x="346" y="722" font-family="'JetBrains Mono',monospace" font-size="11" fill="#fbbf24">🔑 id_detail : INT (PK, AI)</text>
+  <text x="346" y="742" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f59e0b">🔗 id_transaksi : INT (FK)</text>
+  <text x="346" y="762" font-family="'JetBrains Mono',monospace" font-size="11" fill="#f59e0b">🔗 id_produk : INT (FK)</text>
+  <text x="346" y="782" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   jumlah : INT</text>
+  <text x="346" y="802" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   harga : DECIMAL(15,2)</text>
+  <text x="346" y="822" font-family="'JetBrains Mono',monospace" font-size="11" fill="#e0e7ff">   subtotal : DECIMAL(15,2)</text>
+</g>
+
+<!-- ═══════════════════════════════
+     RELATIONS (arrows)
+     ═══════════════════════════════ -->
+
+<!-- users "1" ──────── "N" transaksi (id_user FK) -->
+<!-- users bottom (210,295) → transaksi top (210,320) -->
+<line x1="210" y1="295" x2="210" y2="320" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#fk)"/>
+<text x="215" y="310" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">1</text>
+<text x="215" y="322" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">N</text>
+
+<!-- kategori "1" ──── "N" produk (id_kategori FK) -->
+<!-- kategori bottom (980,225) → go right then down to produk top (760,300) -->
+<polyline points="980,225 980,270 760,270 760,300" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#fk)"/>
+<text x="985" y="248" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">1</text>
+<text x="770" y="290" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">N</text>
+
+<!-- transaksi "1" ──── "N" detail_transaksi (id_transaksi FK) -->
+<!-- transaksi bottom (210,605) → detail top (500,660) -->
+<polyline points="210,605 210,640 500,640 500,660" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#fk)"/>
+<text x="215" y="625" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">1</text>
+<text x="505" y="655" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">N</text>
+
+<!-- produk "1" ──── "N" detail_transaksi (id_produk FK) -->
+<!-- produk bottom (760,605) → detail top (560,660) -->
+<polyline points="760,605 760,640 560,640 560,660" fill="none" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#fk)"/>
+<text x="765" y="625" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">1</text>
+<text x="565" y="655" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">N</text>
+
+<!-- ═══ CARDINALITY LABELS ═══ -->
+<!-- users-transaksi label -->
+<rect x="148" y="300" width="120" height="18" rx="4" fill="rgba(245,158,11,0.15)"/>
+<text x="208" y="312" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">memiliki ▸ melakukan</text>
+
+<!-- kategori-produk label -->
+<rect x="860" y="256" width="108" height="18" rx="4" fill="rgba(245,158,11,0.15)"/>
+<text x="914" y="268" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">berisi ▸ termasuk</text>
+
+<!-- transaksi-detail label -->
+<rect x="286" y="632" width="90" height="18" rx="4" fill="rgba(245,158,11,0.15)"/>
+<text x="331" y="644" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">1 terdiri N</text>
+
+<!-- produk-detail label -->
+<rect x="680" y="632" width="90" height="18" rx="4" fill="rgba(245,158,11,0.15)"/>
+<text x="725" y="644" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="#fbbf24">1 muncul N</text>
+
+</svg>
+</div>
+
+<!-- Legend -->
+<div class="legend">
+  <div class="leg-item">
+    <svg width="40" height="12"><line x1="0" y1="6" x2="32" y2="6" stroke="#f59e0b" stroke-width="2" stroke-dasharray="6,3"/><polygon points="32,3 40,6 32,9" fill="#f59e0b"/></svg>
+    Foreign Key (FK) / Relasi
+  </div>
+  <div class="leg-item">
+    <span style="color:#fbbf24;font-size:13px;">🔑</span> Primary Key (PK)
+  </div>
+  <div class="leg-item">
+    <span style="color:#f59e0b;font-size:13px;">🔗</span> Foreign Key (FK)
+  </div>
+  <div class="leg-item" style="color:#818cf8;font-size:11px;font-family:'JetBrains Mono',monospace;">
+    + method() &nbsp;= public method
+  </div>
+</div>
+
+</body>
+</html>

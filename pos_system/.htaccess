@@ -1,0 +1,42 @@
+# Options
+Options -Indexes
+Options -MultiViews
+
+# Charset
+AddDefaultCharset UTF-8
+
+# Protect sensitive directories
+<FilesMatch "\.(sql|log|env|md|json|lock|git)$">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Protect config directory
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Block direct access to config folder
+    RewriteRule ^config/ - [F,L]
+
+    # Block direct access to database folder
+    RewriteRule ^database/ - [F,L]
+
+    # Redirect root to index.php
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+</IfModule>
+
+
+
+# Security headers
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+# PHP settings
+<IfModule mod_php.c>
+    php_flag display_errors Off
+    php_flag log_errors On
+</IfModule>
